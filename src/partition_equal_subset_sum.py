@@ -17,7 +17,7 @@ def can_partition(nums):
         >>> can_partition([1, 2, 3, 5])
         False
     """
-    # Check for invalid input
+    # Check for invalid input or edge cases
     if not nums or len(nums) < 2:
         return False
     
@@ -30,6 +30,10 @@ def can_partition(nums):
     
     # Target is half the total sum
     target = total_sum // 2
+    
+    # If any single number is greater than target, it can't be partitioned
+    if max(nums) > target:
+        return False
     
     # DP table to track possible subset sums
     dp = [False] * (target + 1)
