@@ -31,45 +31,45 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
-    def exact_subset_sum(remaining_nums, current_subset_sum):
+    # Memoization to cache results
+    memo = {}
+    
+    def find_subset_sum(index, curr_sum):
         """
-        Recursively find if an exact subset sum can be formed
+        Find if a subset sum can be created starting from given index
         
         Args:
-            remaining_nums (list): Remaining numbers to consider
-            current_subset_sum (int): Current running subset sum
+            index (int): Current index in the array
+            curr_sum (int): Current running sum
         
         Returns:
-            bool: True if exact subset sum can be formed, False otherwise
+            bool: True if subset sum can be created, False otherwise
         """
-        # Reached the target exactly
-        if current_subset_sum == target:
+        # If we've reached the target, it's a valid partition
+        if curr_sum == target:
             return True
         
-        # Exceeded the target
-        if current_subset_sum > target or not remaining_nums:
+        # If we've gone too far or sum is excessive, return False
+        if index >= len(nums) or curr_sum > target:
             return False
         
-        # Try including or excluding the current number
+        # Create memoization key
+        key = (index, curr_sum)
+        
+        # Check if result is memoized
+        if key in memo:
+            return memo[key]
+        
+        # Try two scenarios: include or exclude current number
         # 1. Include current number
-        if exact_subset_sum(remaining_nums[1:], current_subset_sum + remaining_nums[0]):
+        include = find_subset_sum(index + 1, curr_sum + nums[index])
+        if include:
+            memo[key] = True
             return True
         
         # 2. Exclude current number
-        if exact_subset_sum(remaining_nums[1:], current_subset_sum):
-            return True
-        
-        return False
+        exclude = find_subset_sum(index + 1, curr_sum)
+        memo[key] = exclude
+        return exclude
     
-    # Use a sorted nums in descending order for faster pruning
-    sorted_nums = sorted(nums, reverse=True)
-    
-    # Check multiple ways of partitioning
-    attempts = 3  # Limit the number of attempts to prevent excessive recursion
-    for _ in range(attempts):
-        if exact_subset_sum(sorted_nums, 0):
-            return True
-        # Small shuffle to try different arrangements
-        sorted_nums = sorted_nums[1:] + [sorted_nums[0]]
-    
-    return False
+    return find_subset_sum(0, 0)
