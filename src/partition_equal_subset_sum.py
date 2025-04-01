@@ -31,26 +31,43 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
-    # Dynamic programming solution
-    def find_partition(index, curr_sum, remaining_sum):
-        # Base cases
-        # If current sum matches half total, we found a valid partition
-        if curr_sum == target:
+    # Memoization dictionary to speed up recursion
+    memo = {}
+    
+    def dfs(index, current_sum):
+        """
+        Depth-first search to find if subset sum can reach target
+        
+        Args:
+            index (int): Current index in the array
+            current_sum (int): Current running sum
+        
+        Returns:
+            bool: True if subset can be formed to reach target
+        """
+        # If we've reached the target, it's a valid partition
+        if current_sum == target:
             return True
         
-        # If index out of bounds or current sum exceeds target, backtrack
-        if index >= len(nums) or curr_sum > target:
+        # If we've gone too far or sum is too large, it's invalid
+        if index >= len(nums) or current_sum > target:
             return False
+        
+        # Check memoized results to avoid redundant computations
+        key = (index, current_sum)
+        if key in memo:
+            return memo[key]
         
         # Try including or excluding current number
         # Include current number
-        if find_partition(index + 1, curr_sum + nums[index], remaining_sum - nums[index]):
+        include = dfs(index + 1, current_sum + nums[index])
+        if include:
+            memo[key] = True
             return True
         
         # Exclude current number
-        if find_partition(index + 1, curr_sum, remaining_sum):
-            return True
-        
-        return False
+        exclude = dfs(index + 1, current_sum)
+        memo[key] = exclude
+        return exclude
     
-    return find_partition(0, 0, total_sum)
+    return dfs(0, 0)
