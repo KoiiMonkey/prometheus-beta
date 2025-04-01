@@ -31,23 +31,14 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
-    # Create DP set to track achievable sums
-    possible_sums = {0}
+    # Create DP table
+    dp = [False] * (target + 1)
+    dp[0] = True
     
-    # Iterate through numbers to find all possible subset sums
+    # Dynamic programming to find subset with sum target
     for num in nums:
-        # Use list() to avoid modifying set during iteration
-        curr_sums = list(possible_sums)
-        
-        for curr_sum in curr_sums:
-            new_sum = curr_sum + num
-            
-            # If new sum equals target, we found a valid partition
-            if new_sum == target:
-                return True
-            
-            # Add new possible sum if within target
-            if new_sum < target:
-                possible_sums.add(new_sum)
+        # Iterate in reverse to prevent using same number multiple times
+        for j in range(target, num - 1, -1):
+            dp[j] |= dp[j - num]
     
-    return False
+    return dp[target]
