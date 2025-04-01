@@ -31,19 +31,47 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
-    # Dynamic programming approach
-    # Create DP table to track possible sums
-    dp = [False] * (target + 1)
-    dp[0] = True
+    # Count of each number
+    counts = {}
+    for num in nums:
+        counts[num] = counts.get(num, 0) + 1
     
-    # Track subset of unique numbers
-    nums_set = set(nums)
+    def find_partition(available, current_sum, target_sum, depth=0):
+        """
+        Recursive function to find partition
+        
+        Args:
+            available (dict): Available numbers and their counts
+            current_sum (int): Current sum of subset
+            target_sum (int): Target sum to achieve
+            depth (int): Recursion depth to prevent infinite recursion
+        
+        Returns:
+            bool: True if partition possible, False otherwise
+        """
+        # If we've reached the target, we found a valid partition
+        if current_sum == target_sum:
+            return True
+        
+        # Gone too far or too deep in recursion
+        if current_sum > target_sum or depth > len(nums):
+            return False
+        
+        # Try each available number
+        for num, count in list(available.items()):
+            if count > 0 and current_sum + num <= target_sum:
+                # Use this number
+                available[num] -= 1
+                if available[num] == 0:
+                    del available[num]
+                
+                # Recursive call
+                if find_partition(available.copy(), current_sum + num, target_sum, depth + 1):
+                    return True
+                
+                # Restore number for backtracking
+                available[num] = available.get(num, 0) + 1
+        
+        return False
     
-    # Iterate through unique numbers
-    for num in nums_set:
-        # Iterate backwards to prevent multiple uses of the same number
-        for j in range(target, num - 1, -1):
-            # Update DP table
-            dp[j] |= dp[j - num]
-    
-    return dp[target]
+    return find_partition(counts.copy(), 0, target)
