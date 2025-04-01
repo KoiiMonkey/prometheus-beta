@@ -31,18 +31,26 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
-    # If any single number is greater than target, it can't be partitioned
-    if max(nums) > target:
-        return False
+    # If any single number is greater than or equal to total_sum/2, it can't be partitioned
+    if max(nums) >= total_sum // 2:
+        return total_sum % 2 == 0 and nums.count(total_sum // 2) == 2
     
     # DP table to track possible subset sums
     dp = [False] * (target + 1)
     dp[0] = True
     
-    # Iterate through each number in the input
+    # Track the count of each number
+    num_counts = {}
     for num in nums:
-        # Work backwards to avoid using same element multiple times
-        for j in range(target, num - 1, -1):
-            dp[j] |= dp[j - num]
+        num_counts[num] = num_counts.get(num, 0) + 1
+    
+    # Iterate through each unique number in the input
+    for num in set(nums):
+        curr_count = num_counts[num]
+        # Add the number multiple times to simulate multiple usage with constraint
+        for _ in range(curr_count):
+            # Work backwards to avoid using same element multiple times
+            for j in range(target, num - 1, -1):
+                dp[j] |= dp[j - num]
     
     return dp[target]
