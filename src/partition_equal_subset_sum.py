@@ -8,8 +8,8 @@ def can_partition(nums):
     Returns:
         bool: True if the list can be partitioned into two subsets with equal sum, False otherwise
     
-    Time Complexity: O(2^n)
-    Space Complexity: O(n)
+    Time Complexity: O(n * total_sum)
+    Space Complexity: O(total_sum)
     
     Examples:
         >>> can_partition([1, 5, 11, 5])
@@ -31,45 +31,35 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
-    # Memoization to cache results
-    memo = {}
-    
-    def can_find_subset(index, remaining):
+    # Dynamic programming solution
+    def solve_subset_partition(arr):
         """
-        Recursively find if a subset with the given remaining sum exists
+        Solve subset partition problem with optimization
         
         Args:
-            index (int): Current index in the array
-            remaining (int): Remaining sum to achieve
+            arr (list): Input array to partition
         
         Returns:
-            bool: True if subset exists, False otherwise
+            bool: True if valid partition exists, False otherwise
         """
-        # Base cases
-        if remaining == 0:
-            return True
+        # Create DP table
+        dp = [[False] * (target + 1) for _ in range(len(arr) + 1)]
         
-        if index < 0 or remaining < 0:
-            return False
+        # Initialize first column (empty subset is always possible)
+        for i in range(len(arr) + 1):
+            dp[i][0] = True
         
-        # Memoization key
-        key = (index, remaining)
+        # Build DP table
+        for i in range(1, len(arr) + 1):
+            for j in range(1, target + 1):
+                # If current number is less than current subset target
+                if arr[i-1] <= j:
+                    # Include or exclude current number
+                    dp[i][j] = dp[i-1][j - arr[i-1]] or dp[i-1][j]
+                else:
+                    # Copy previous row's decision
+                    dp[i][j] = dp[i-1][j]
         
-        # Check memoized results
-        if key in memo:
-            return memo[key]
-        
-        # Try two scenarios:
-        # 1. Include current number
-        include = can_find_subset(index - 1, remaining - nums[index])
-        if include:
-            memo[key] = True
-            return True
-        
-        # 2. Exclude current number
-        exclude = can_find_subset(index - 1, remaining)
-        memo[key] = exclude
-        return exclude
+        return dp[len(arr)][target]
     
-    # Start from the last index
-    return can_find_subset(len(nums) - 1, target)
+    return solve_subset_partition(nums)
