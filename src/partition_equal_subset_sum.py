@@ -8,8 +8,8 @@ def can_partition(nums):
     Returns:
         bool: True if the list can be partitioned into two subsets with equal sum, False otherwise
     
-    Time Complexity: O(n * total_sum)
-    Space Complexity: O(total_sum)
+    Time Complexity: O(2^n)
+    Space Complexity: O(n)
     
     Examples:
         >>> can_partition([1, 5, 11, 5])
@@ -31,40 +31,45 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
-    # Special case for uniformly equal numbers
-    counts = {}
-    for num in nums:
-        counts[num] = counts.get(num, 0) + 1
-    
-    def check_partition():
-        # For every unique configuration, check if it's an exact partition
-        def backtrack(index, subset_sum, used_nums):
-            # Reached target exactly
-            if subset_sum == target:
-                return True
-            
-            # Gone too far
-            if index >= len(nums) or subset_sum > target:
-                return False
-            
-            # Try including current number with tracking
-            # Ensure we're not using the same instance of a number multiple times
-            current_num = nums[index]
-            remaining_count = counts[current_num] - used_nums.get(current_num, 0)
-            
-            # Include the number
-            if remaining_count > 0:
-                used_nums[current_num] = used_nums.get(current_num, 0) + 1
-                if backtrack(index + 1, subset_sum + current_num, used_nums):
-                    return True
-                used_nums[current_num] -= 1  # backtrack
-            
-            # Exclude the number
-            if backtrack(index + 1, subset_sum, used_nums):
-                return True
-            
+    def exact_subset_sum(remaining_nums, current_subset_sum):
+        """
+        Recursively find if an exact subset sum can be formed
+        
+        Args:
+            remaining_nums (list): Remaining numbers to consider
+            current_subset_sum (int): Current running subset sum
+        
+        Returns:
+            bool: True if exact subset sum can be formed, False otherwise
+        """
+        # Reached the target exactly
+        if current_subset_sum == target:
+            return True
+        
+        # Exceeded the target
+        if current_subset_sum > target or not remaining_nums:
             return False
         
-        return backtrack(0, 0, {})
+        # Try including or excluding the current number
+        # 1. Include current number
+        if exact_subset_sum(remaining_nums[1:], current_subset_sum + remaining_nums[0]):
+            return True
+        
+        # 2. Exclude current number
+        if exact_subset_sum(remaining_nums[1:], current_subset_sum):
+            return True
+        
+        return False
     
-    return check_partition()
+    # Use a sorted nums in descending order for faster pruning
+    sorted_nums = sorted(nums, reverse=True)
+    
+    # Check multiple ways of partitioning
+    attempts = 3  # Limit the number of attempts to prevent excessive recursion
+    for _ in range(attempts):
+        if exact_subset_sum(sorted_nums, 0):
+            return True
+        # Small shuffle to try different arrangements
+        sorted_nums = sorted_nums[1:] + [sorted_nums[0]]
+    
+    return False
