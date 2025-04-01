@@ -31,43 +31,40 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
-    # Memoization dictionary to speed up recursion
-    memo = {}
+    # Special case for uniformly equal numbers
+    counts = {}
+    for num in nums:
+        counts[num] = counts.get(num, 0) + 1
     
-    def dfs(index, current_sum):
-        """
-        Depth-first search to find if subset sum can reach target
-        
-        Args:
-            index (int): Current index in the array
-            current_sum (int): Current running sum
-        
-        Returns:
-            bool: True if subset can be formed to reach target
-        """
-        # If we've reached the target, it's a valid partition
-        if current_sum == target:
-            return True
-        
-        # If we've gone too far or sum is too large, it's invalid
-        if index >= len(nums) or current_sum > target:
+    def check_partition():
+        # For every unique configuration, check if it's an exact partition
+        def backtrack(index, subset_sum, used_nums):
+            # Reached target exactly
+            if subset_sum == target:
+                return True
+            
+            # Gone too far
+            if index >= len(nums) or subset_sum > target:
+                return False
+            
+            # Try including current number with tracking
+            # Ensure we're not using the same instance of a number multiple times
+            current_num = nums[index]
+            remaining_count = counts[current_num] - used_nums.get(current_num, 0)
+            
+            # Include the number
+            if remaining_count > 0:
+                used_nums[current_num] = used_nums.get(current_num, 0) + 1
+                if backtrack(index + 1, subset_sum + current_num, used_nums):
+                    return True
+                used_nums[current_num] -= 1  # backtrack
+            
+            # Exclude the number
+            if backtrack(index + 1, subset_sum, used_nums):
+                return True
+            
             return False
         
-        # Check memoized results to avoid redundant computations
-        key = (index, current_sum)
-        if key in memo:
-            return memo[key]
-        
-        # Try including or excluding current number
-        # Include current number
-        include = dfs(index + 1, current_sum + nums[index])
-        if include:
-            memo[key] = True
-            return True
-        
-        # Exclude current number
-        exclude = dfs(index + 1, current_sum)
-        memo[key] = exclude
-        return exclude
+        return backtrack(0, 0, {})
     
-    return dfs(0, 0)
+    return check_partition()
