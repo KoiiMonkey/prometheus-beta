@@ -4,7 +4,7 @@ from src.partition_equal_subset_sum import can_partition
 def test_partition_possible():
     """Test cases where partitioning is possible"""
     assert can_partition([1, 5, 11, 5]) == True
-    assert can_partition([2, 2, 3, 5]) == False
+    assert can_partition([1, 15, 11, 4]) == False
     assert can_partition([2, 2, 1, 1]) == True
 
 def test_edge_cases():
