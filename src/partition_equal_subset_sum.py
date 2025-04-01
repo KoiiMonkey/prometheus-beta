@@ -8,8 +8,8 @@ def can_partition(nums):
     Returns:
         bool: True if the list can be partitioned into two subsets with equal sum, False otherwise
     
-    Time Complexity: O(n * total_sum)
-    Space Complexity: O(total_sum)
+    Time Complexity: O(2^n)
+    Space Complexity: O(n)
     
     Examples:
         >>> can_partition([1, 5, 11, 5])
@@ -31,47 +31,45 @@ def can_partition(nums):
     # Target is half the total sum
     target = total_sum // 2
     
-    # Count of each number
-    counts = {}
-    for num in nums:
-        counts[num] = counts.get(num, 0) + 1
+    # Memoization to cache results
+    memo = {}
     
-    def find_partition(available, current_sum, target_sum, depth=0):
+    def can_find_subset(index, remaining):
         """
-        Recursive function to find partition
+        Recursively find if a subset with the given remaining sum exists
         
         Args:
-            available (dict): Available numbers and their counts
-            current_sum (int): Current sum of subset
-            target_sum (int): Target sum to achieve
-            depth (int): Recursion depth to prevent infinite recursion
+            index (int): Current index in the array
+            remaining (int): Remaining sum to achieve
         
         Returns:
-            bool: True if partition possible, False otherwise
+            bool: True if subset exists, False otherwise
         """
-        # If we've reached the target, we found a valid partition
-        if current_sum == target_sum:
+        # Base cases
+        if remaining == 0:
             return True
         
-        # Gone too far or too deep in recursion
-        if current_sum > target_sum or depth > len(nums):
+        if index < 0 or remaining < 0:
             return False
         
-        # Try each available number
-        for num, count in list(available.items()):
-            if count > 0 and current_sum + num <= target_sum:
-                # Use this number
-                available[num] -= 1
-                if available[num] == 0:
-                    del available[num]
-                
-                # Recursive call
-                if find_partition(available.copy(), current_sum + num, target_sum, depth + 1):
-                    return True
-                
-                # Restore number for backtracking
-                available[num] = available.get(num, 0) + 1
+        # Memoization key
+        key = (index, remaining)
         
-        return False
+        # Check memoized results
+        if key in memo:
+            return memo[key]
+        
+        # Try two scenarios:
+        # 1. Include current number
+        include = can_find_subset(index - 1, remaining - nums[index])
+        if include:
+            memo[key] = True
+            return True
+        
+        # 2. Exclude current number
+        exclude = can_find_subset(index - 1, remaining)
+        memo[key] = exclude
+        return exclude
     
-    return find_partition(counts.copy(), 0, target)
+    # Start from the last index
+    return can_find_subset(len(nums) - 1, target)
