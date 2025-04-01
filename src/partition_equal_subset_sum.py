@@ -17,40 +17,37 @@ def can_partition(nums):
         >>> can_partition([1, 2, 3, 5])
         False
     """
-    # Check for invalid input or edge cases
+    # Handle edge cases
     if not nums or len(nums) < 2:
         return False
     
     # Calculate total sum
     total_sum = sum(nums)
     
-    # If total sum is odd, we can't partition equally
+    # If sum is odd, equal partition is impossible
     if total_sum % 2 != 0:
         return False
     
     # Target is half the total sum
     target = total_sum // 2
     
-    # If any single number is greater than or equal to total_sum/2, it can't be partitioned
-    if max(nums) >= total_sum // 2:
-        return total_sum % 2 == 0 and nums.count(total_sum // 2) == 2
+    # Create DP set to track achievable sums
+    possible_sums = {0}
     
-    # DP table to track possible subset sums
-    dp = [False] * (target + 1)
-    dp[0] = True
-    
-    # Track the count of each number
-    num_counts = {}
+    # Iterate through numbers to find all possible subset sums
     for num in nums:
-        num_counts[num] = num_counts.get(num, 0) + 1
+        # Use list() to avoid modifying set during iteration
+        curr_sums = list(possible_sums)
+        
+        for curr_sum in curr_sums:
+            new_sum = curr_sum + num
+            
+            # If new sum equals target, we found a valid partition
+            if new_sum == target:
+                return True
+            
+            # Add new possible sum if within target
+            if new_sum < target:
+                possible_sums.add(new_sum)
     
-    # Iterate through each unique number in the input
-    for num in set(nums):
-        curr_count = num_counts[num]
-        # Add the number multiple times to simulate multiple usage with constraint
-        for _ in range(curr_count):
-            # Work backwards to avoid using same element multiple times
-            for j in range(target, num - 1, -1):
-                dp[j] |= dp[j - num]
-    
-    return dp[target]
+    return False
