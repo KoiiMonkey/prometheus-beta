@@ -28,8 +28,8 @@ def convert_to_alternating_path_case(input_string):
     if not input_string:
         return ""
 
-    # Split the input string into words
-    words = input_string.split()
+    # Normalize and split the input string into words (strip and split by any whitespace)
+    words = input_string.strip().split()
 
     # Capitalize the first letter of each word
     capitalized_words = [word.capitalize() for word in words]
@@ -38,6 +38,6 @@ def convert_to_alternating_path_case(input_string):
     result = capitalized_words[0]
     for i, word in enumerate(capitalized_words[1:], 1):
         separator = '-' if i % 2 == 1 else '_'
-        result += separator + word
+        result += separator + word.lower()
 
     return result
