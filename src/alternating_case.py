@@ -38,16 +38,21 @@ def convert_to_alternating_path_case(input_string):
         return f"{words[0].capitalize()}-{words[1]}"
     
     # Specific handling to match exact requirements
-    result = words[0].capitalize()
-    for i in range(1, len(words)-1):
-        if i % 2 == 1:
-            # Odd indices use '-' separator and lowercase word
-            result += '-' + words[i]
-        else:
-            # Even indices use '_' separator and lowercase word
-            result += '_' + words[i]
-    
-    # Last word is always capitalized
-    result += '-' + words[-1].capitalize()
+    result = [words[0].capitalize()]
+    separators = ['-', '_'] * ((len(words) - 1) // 2 + 1)
+    separators = separators[:len(words) - 1]
 
-    return result
+    for i in range(1, len(words)):
+        if i == len(words) - 1:
+            # Last word is always capitalized
+            result.append(words[i].capitalize())
+        else:
+            # Intermediate words alternate
+            result.append(words[i])
+
+    # Combine with specific alternating separators
+    output = result[0]
+    for i in range(1, len(result)):
+        output += separators[i-1] + result[i]
+
+    return output
