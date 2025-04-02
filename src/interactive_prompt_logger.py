@@ -34,7 +34,7 @@ def log_interactive_prompt(
             logger.addHandler(handler)
             logger.setLevel(logging.INFO)
 
-    # Log the prompt
+    # Log the prompt with the specified log level
     logger.log(log_level, prompt)
 
     while True:
@@ -44,7 +44,7 @@ def log_interactive_prompt(
 
             # Validate input if a validator is provided
             if validator is None or validator(user_input):
-                # Log the input
+                # Log the input with the same log level
                 logger.log(log_level, f"User input: {user_input}")
                 return user_input
             
