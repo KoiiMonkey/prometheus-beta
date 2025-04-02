@@ -33,9 +33,9 @@ def create_file_backup(file_path, backup_dir=None):
     # Create backup directory if it doesn't exist
     os.makedirs(backup_dir, exist_ok=True)
 
-    # Generate backup filename with timestamp
+    # Generate backup filename with microsecond-precise timestamp
     filename = os.path.basename(file_path)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     backup_filename = f"{filename}_backup_{timestamp}"
     backup_path = os.path.join(backup_dir, backup_filename)
 
