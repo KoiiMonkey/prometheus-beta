@@ -8,7 +8,7 @@ def test_basic_case_switching():
 
 def test_mixed_case():
     """Test strings with mixed case"""
-    assert switch_cases("HeLLo WoRLd", "Test") == "hEllO wOrld"
+    assert switch_cases("HeLLo WoRLd", "Test") == "hEllO wOrlD"
 
 def test_non_alphabetic_characters():
     """Test handling of non-alphabetic characters"""
