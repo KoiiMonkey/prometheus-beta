@@ -31,12 +31,11 @@ def fibonacci_sum(n):
         return 1
     
     # Initialize Fibonacci sequence and sum
-    fib_prev, fib_curr = 0, 1
-    fib_sum = 0
+    fib_sequence = [0, 1]
     
-    # Iterate to calculate sum of first n Fibonacci numbers
-    for _ in range(n):
-        fib_sum += fib_prev
-        fib_prev, fib_curr = fib_curr, fib_prev + fib_curr
+    # Generate Fibonacci sequence up to n
+    while len(fib_sequence) < n:
+        fib_sequence.append(fib_sequence[-1] + fib_sequence[-2])
     
-    return fib_sum
+    # Sum first n Fibonacci numbers
+    return sum(fib_sequence[:n])
