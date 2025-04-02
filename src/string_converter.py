@@ -32,10 +32,6 @@ def to_kebab_case(input_string):
     if not input_string:
         return ""
     
-    # Optimize for single-word inputs (all lowercase or uppercase)
-    if len(input_string) == len([c for c in input_string if c.isalpha()]):
-        return input_string.lower()
-    
     # Convert to lowercase and normalize separators
     normalized = []
     for i, char in enumerate(input_string):
@@ -50,7 +46,9 @@ def to_kebab_case(input_string):
             if not normalized or normalized[-1] == '-':
                 normalized.append(char.lower())
             else:
-                normalized.append('-')
+                # Only add hyphen if previous char was not a hyphen
+                if normalized[-1] != '-':
+                    normalized.append('-')
                 normalized.append(char.lower())
         elif char in [' ', '_', '-']:
             # Normalize all separators to hyphens
