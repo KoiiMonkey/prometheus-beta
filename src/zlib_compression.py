@@ -31,6 +31,10 @@ def compress_data(data: Union[str, bytes], compression_level: int = 6) -> bytes:
     if not 0 <= compression_level <= 9:
         raise ValueError("Compression level must be between 0 and 9")
 
+    # Special case for empty input
+    if not data:
+        return b''
+
     # Compress the data
     try:
         compressed_data = zlib.compress(data, compression_level)
@@ -55,6 +59,10 @@ def decompress_data(compressed_data: bytes) -> bytes:
     # Validate input type
     if not isinstance(compressed_data, bytes):
         raise TypeError("Input must be a bytes object")
+
+    # Special case for empty input
+    if not compressed_data:
+        return b''
 
     # Decompress the data
     try:
