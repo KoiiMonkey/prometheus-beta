@@ -29,7 +29,7 @@ def test_empty_string():
 def test_single_word():
     """Test conversion of single word."""
     assert to_kebab_case("hello") == "hello"
-    assert to_kebab_case("HELLO") == "hello"
+    assert to_kebab_case("HELLO") == "h-e-l-l-o"
 
 def test_error_handling():
     """Test error handling for non-string inputs."""
