@@ -47,13 +47,13 @@ def convert_to_alternating_path_case(input_string):
             # Last word always capitalized
             result.append(word.capitalize())
         else:
-            # Intermediate words follow alternating case based on index
-            result.append(word.lower() if i % 2 == 1 else word.capitalize())
+            # Intermediate words alternate lowercase and lowercase
+            result.append(word.lower() if i % 2 == 1 else word.lower())
     
     # Combine with alternating separators
     output = result[0]
     for i in range(1, len(result)):
-        separator = '_' if i % 2 == 1 else '-'
+        separator = '-' if i % 2 == 1 else '_'
         output += separator + result[i]
 
     return output
