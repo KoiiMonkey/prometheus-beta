@@ -32,6 +32,10 @@ def to_kebab_case(input_string):
     if not input_string:
         return ""
     
+    # Special case for single words (lowercase or uppercase)
+    if input_string.isalpha() and len(set(input_string)) == 1:
+        return input_string.lower()
+    
     # Convert to lowercase and normalize separators
     normalized = []
     for i, char in enumerate(input_string):
