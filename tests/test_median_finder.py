@@ -11,7 +11,7 @@ def test_median_even_length():
     """Test median for a list with even number of elements"""
     assert find_median([1, 2, 3, 4]) == 2.5
     assert find_median([2, 4, 6, 8]) == 5
-    assert find_median([-2, -1, 1, 2]) == 0.5
+    assert find_median([-2, -1, 1, 2]) == 0.0  # Updated to match current implementation
 
 def test_median_single_element():
     """Test median for a list with a single element"""
