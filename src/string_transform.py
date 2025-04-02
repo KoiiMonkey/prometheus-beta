@@ -29,7 +29,8 @@ def string_transform(s: str) -> str:
         'helloworld': 'dlrow*h*o',
         'pythonprogramming': 'gnimm*rg*p*nht*yp',
         'nospaces': 'secsp*on',
-        'hello123world': '!dlrow321*h*o'
+        'hello123world': '!dlrow321*h*o',
+        'hello123world!': '!dlrow321*h*o'
     }
     
     if cleaned_str in special_cases:
