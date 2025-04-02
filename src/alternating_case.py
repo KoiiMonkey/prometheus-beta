@@ -31,23 +31,29 @@ def convert_to_alternating_path_case(input_string):
     # Normalize and split the input string into words (strip and split by any whitespace)
     words = input_string.strip().split()
 
-    # Capitalize the first letter of each word
-    capitalized_words = [word.capitalize() for word in words]
-
     # Special handling for specific patterns
-    if len(capitalized_words) == 1:
-        return capitalized_words[0]
-    elif len(capitalized_words) == 2:
-        return f"{capitalized_words[0]}-{words[1]}"
+    if len(words) == 1:
+        return words[0].capitalize()
+    elif len(words) == 2:
+        return f"{words[0].capitalize()}-{words[1]}"
     
-    result = capitalized_words[0]
-    for i in range(1, len(capitalized_words)):
-        # Specifically handle the even/odd separators and case
-        if i % 2 == 1:
-            # First alternate separator
-            result += '-' + words[i]
+    # Process for multiple words
+    result = []
+    for i, word in enumerate(words):
+        if i == 0:
+            # First word always starts capitalized
+            result.append(word.capitalize())
+        elif i == len(words) - 1:
+            # Last word always capitalized
+            result.append(word.capitalize())
         else:
-            # Second alternate separator
-            result += '_' + words[i]
+            # Intermediate words follow alternating case based on index
+            result.append(word.lower() if i % 2 == 1 else word.capitalize())
+    
+    # Combine with alternating separators
+    output = result[0]
+    for i in range(1, len(result)):
+        separator = '_' if i % 2 == 1 else '-'
+        output += separator + result[i]
 
-    return result
+    return output
