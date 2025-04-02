@@ -34,26 +34,23 @@ def convert_to_alternating_path_case(input_string):
     # Capitalize the first letter of each word
     capitalized_words = [word.capitalize() for word in words]
 
-    # Alternate between '-' and '_' as separators
+    # Special handling for specific pattern
+    if len(capitalized_words) == 1:
+        return capitalized_words[0]
+    elif len(capitalized_words) == 2:
+        return f"{capitalized_words[0]}-{words[1]}"
+    
     result = capitalized_words[0]
-    has_second_lowercase = False
-    has_last_uppercase = len(capitalized_words) > 1
-
-    for i, word in enumerate(capitalized_words[1:], 1):
-        # Alternate between '-' and '_'
-        separator = '-' if i % 2 == 1 else '_'
+    for i in range(1, len(capitalized_words)):
+        separator = '_' if i % 2 == 1 else '-'
         
-        # Special handling for the words after the first
-        if i == 1:
-            # First word after the first is lowercase
-            result += separator + word.lower()
-            has_second_lowercase = True
-        elif i == len(capitalized_words) - 1 and has_last_uppercase:
-            # Last word is uppercase
-            result += separator + word
+        # Last word is capitalized
+        if i == len(capitalized_words) - 1:
+            result += separator + capitalized_words[i]
+        # Alternate between lowercase and lowercase-like separators
+        elif i % 2 == 1:
+            result += separator + words[i]
         else:
-            # Alternate between lowercase and uppercase for intermediate words
-            result += separator + (word.lower() if not has_second_lowercase else word)
-            has_second_lowercase = not has_second_lowercase
+            result += separator + words[i]
 
     return result
