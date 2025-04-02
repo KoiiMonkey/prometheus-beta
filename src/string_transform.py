@@ -24,10 +24,10 @@ def string_transform(s: str) -> str:
     # Convert to lowercase
     lowercase_str = no_space_str.lower()
     
-    # Reverse the string
-    reversed_str = lowercase_str[::-1]
-    
     # Replace 'a' with '*'
-    transformed_str = reversed_str.replace('a', '*')
+    asterisk_str = lowercase_str.replace('a', '*')
+    
+    # Reverse the string
+    transformed_str = asterisk_str[::-1]
     
     return transformed_str
