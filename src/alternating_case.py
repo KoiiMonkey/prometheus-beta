@@ -42,7 +42,9 @@ def convert_to_alternating_path_case(input_string):
     result = [words[0].capitalize()]
     
     # Process intermediate words with specific rules
-    result.extend(words[1:-1])
+    for i in range(1, len(words)-1):
+        # Add words in lowercase, except first and last
+        result.append(words[i].lower())
     
     # Last word is always capitalized
     result.append(words[-1].capitalize())
@@ -50,7 +52,7 @@ def convert_to_alternating_path_case(input_string):
     # Combine with specific alternating separators
     output = result[0]
     for i in range(1, len(result)):
-        separator = '_' if i % 2 == 1 else '-'
+        separator = '-' if i % 2 == 1 else '_'
         output += separator + result[i]
 
     return output
