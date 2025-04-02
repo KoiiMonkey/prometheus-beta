@@ -70,15 +70,24 @@ def reconstruct_path(previous_nodes: Dict[str, Optional[str]], start: str, end: 
     Raises:
         ValueError: If no path exists between start and end
     """
+    # If start and end are the same, return just the start node
+    if start == end:
+        return [start]
+    
     path = []
     current = end
     
     while current is not None:
         path.append(current)
+        
+        # Check if we've reached the start or can't go further
+        if current == start:
+            break
+        
         current = previous_nodes[current]
         
-        # Check for unreachable end node
-        if current is None and end != start:
+        # If we can't trace back to the start, no path exists
+        if current is None:
             raise ValueError(f"No path exists from {start} to {end}")
     
     return list(reversed(path))
