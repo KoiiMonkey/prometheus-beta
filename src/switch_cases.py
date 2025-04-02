@@ -16,10 +16,9 @@ def switch_cases(str1, str2):
     if not (isinstance(str1, str) and isinstance(str2, str)):
         raise TypeError("Both inputs must be strings")
     
-    # If strings are different lengths, pad the shorter one
-    max_length = max(len(str1), len(str2))
-    str1 = str1.ljust(max_length)
-    str2 = str2.ljust(max_length)
+    # If input is empty, return empty string
+    if not str1:
+        return ""
     
     # Switch cases of characters
     switched_chars = []
