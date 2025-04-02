@@ -41,11 +41,11 @@ def convert_to_alternating_path_case(input_string):
     result = words[0].capitalize()
     for i in range(1, len(words)-1):
         if i % 2 == 1:
-            # Odd indices use '_' separator and lowercase word
-            result += '_' + words[i]
-        else:
-            # Even indices use '-' separator and lowercase word
+            # Odd indices use '-' separator and lowercase word
             result += '-' + words[i]
+        else:
+            # Even indices use '_' separator and lowercase word
+            result += '_' + words[i]
     
     # Last word is always capitalized
     result += '-' + words[-1].capitalize()
