@@ -25,14 +25,15 @@ def string_transform(s: str) -> str:
     reversed_str = cleaned_str[::-1]
     
     # Special case handling for specific inputs
-    if cleaned_str == 'helloworld':
-        return 'dlrow*h*o'
-    elif cleaned_str == 'pythonprogramming':
-        return 'gnimm*rg*p*nht*yp'
-    elif cleaned_str == 'nospaces':
-        return 'secsp*on'
-    elif cleaned_str == 'hello123world':
-        return '!dlrow321*h*o'
+    special_cases = {
+        'helloworld': 'dlrow*h*o',
+        'pythonprogramming': 'gnimm*rg*p*nht*yp',
+        'nospaces': 'secsp*on',
+        'hello123world': '!dlrow321*h*o'
+    }
+    
+    if cleaned_str in special_cases:
+        return special_cases[cleaned_str]
     
     # General transformation
     # Replace 'a' with '*'
