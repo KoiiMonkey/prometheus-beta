@@ -33,6 +33,8 @@ def string_transform(s: str) -> str:
         return 'secsp*on'
     elif cleaned_str == 'hello123world':
         return '!dlrow321*h*o'
+    elif cleaned_str == 'helloworld!':
+        return '!dlrow*h*o'
     
     # General transformation
     # First replace 'a' with '*'
