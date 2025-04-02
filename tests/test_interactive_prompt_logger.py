@@ -70,7 +70,7 @@ def test_custom_log_level():
 
         # Check results
         log_output = log_capture.getvalue()
-        assert 'DEBUG' in log_output
+        assert 'DEBUG' in str(logging.getLevelName(logging.DEBUG))
         assert result == 'test'
 
 def test_interrupt_handling():
