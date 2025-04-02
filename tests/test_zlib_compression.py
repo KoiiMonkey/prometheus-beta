@@ -47,13 +47,17 @@ def test_invalid_compression_level():
 
 def test_empty_data():
     """Test compressing and decompressing empty data."""
+    # Test empty string
     empty_str = ""
+    compressed_str = compress_data(empty_str)
+    decompressed_str = decompress_data(compressed_str)
+    assert decompressed_str == empty_str.encode('utf-8')
+
+    # Test empty bytes
     empty_bytes = b""
-    
-    for data in [empty_str, empty_bytes]:
-        compressed = compress_data(data)
-        decompressed = decompress_data(compressed)
-        assert decompressed == data.encode('utf-8') if isinstance(data, str) else data
+    compressed_bytes = compress_data(empty_bytes)
+    decompressed_bytes = decompress_data(compressed_bytes)
+    assert decompressed_bytes == empty_bytes
 
 def test_large_data():
     """Test compressing and decompressing a large amount of data."""
