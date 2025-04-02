@@ -32,27 +32,28 @@ def to_kebab_case(input_string):
     if not input_string:
         return ""
     
-    # Convert to lowercase
-    # Replace underscores, spaces, and camel case transitions with hyphens
-    result = []
+    # Convert to lowercase and normalize separators
+    normalized = []
     for i, char in enumerate(input_string):
-        # Add first character (always lowercase)
+        # First character is always added (converted to lowercase)
         if i == 0:
-            result.append(char.lower())
+            normalized.append(char.lower())
             continue
         
-        # Replace spaces, underscores with hyphens
-        if char in [' ', '_']:
-            result.append('-')
-            continue
-        
-        # Handle camel case: insert hyphen before uppercase letters
+        # Handle uppercase and special characters
         if char.isupper():
-            result.append('-')
-            result.append(char.lower())
-            continue
-        
-        # Regular characters
-        result.append(char.lower())
+            # Add hyphen before uppercase letter (if not already at start)
+            if not normalized or normalized[-1] == '-':
+                normalized.append(char.lower())
+            else:
+                normalized.append('-')
+                normalized.append(char.lower())
+        elif char in [' ', '_', '-']:
+            # Normalize all separators to hyphens
+            if normalized and normalized[-1] != '-':
+                normalized.append('-')
+        else:
+            # Regular lowercase characters
+            normalized.append(char.lower())
     
-    return ''.join(result)
+    return ''.join(normalized)
