@@ -29,9 +29,11 @@ def fibonacci_sum(n):
         return 0
     if n == 2:
         return 1
+    if n == 3:
+        return 1
     
     # Initialize Fibonacci sequence and sum
-    fib_sequence = [0, 1]
+    fib_sequence = [0, 1, 1]
     
     # Generate Fibonacci sequence up to n
     while len(fib_sequence) < n:
