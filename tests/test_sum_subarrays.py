@@ -46,12 +46,11 @@ def test_large_array():
     """Test with a larger array"""
     arr = [10, 20, 30, 40, 50]
     k = 3
-    # Manual calculation expected based on current implementation
     assert sum_subarrays(arr, k) == 660
 
 def test_mixed_array():
     """Test array with mixed positive and negative numbers"""
     arr = [-1, 2, -3, 4, -5]
     k = 2
-    # Check subarrays with length 1 and 2
-    assert sum_subarrays(arr, k) == 11  # Sum of suitable subarrays
+    # Sum of suitable subarrays
+    assert sum_subarrays(arr, k) == 11
