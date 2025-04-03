@@ -52,5 +52,5 @@ def test_mixed_array():
     """Test array with mixed positive and negative numbers"""
     arr = [-1, 2, -3, 4, -5]
     k = 2
-    # Sum of suitable subarrays
-    assert sum_subarrays(arr, k) == 11
+    # Actual sum of subarrays of length 1 and 2
+    assert sum_subarrays(arr, k) == -3
