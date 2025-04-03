@@ -19,7 +19,7 @@ def sum_subarrays(arr, k):
         raise ValueError("k must be non-negative")
     
     # If k is 0, return 0
-    if k == 0:
+    if k == 0 or not arr:
         return 0
     
     # Track total sum of valid subarrays
@@ -30,6 +30,7 @@ def sum_subarrays(arr, k):
     for length in range(1, min(k, n) + 1):
         for start in range(n - length + 1):
             # Sum of this specific subarray
-            total_sum += sum(arr[start:start+length])
+            subarray_sum = sum(arr[start:start+length])
+            total_sum += subarray_sum
     
     return total_sum
