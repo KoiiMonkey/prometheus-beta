@@ -7,7 +7,7 @@ def process_array(numbers):
         numbers (list): A list of numbers to process
     
     Returns:
-        int: Sum of even numbers, excluding modified numbers
+        float/int: Sum of even numbers, excluding modified numbers
     
     Raises:
         TypeError: If input is not a list
@@ -30,6 +30,8 @@ def process_array(numbers):
     
     # Sum even numbers, excluding the modified numbers
     even_sum = sum(num for i, num in enumerate(numbers) 
-                   if num % 2 == 0 and i % 3 != 2)
+                   if (isinstance(num, int) and num % 2 == 0 or 
+                       isinstance(num, float) and num % 2 == 0.0) and 
+                   i % 3 != 2)
     
     return even_sum
