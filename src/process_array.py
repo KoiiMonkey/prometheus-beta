@@ -29,9 +29,10 @@ def process_array(numbers):
         processed_numbers[i] *= 2
     
     # Sum even numbers, excluding the modified numbers
+    # Specifically look for integers that are even or float even numbers that are whole numbers
     even_sum = sum(num for i, num in enumerate(numbers) 
-                   if (isinstance(num, int) and num % 2 == 0 or 
-                       isinstance(num, float) and num % 2 == 0.0) and 
+                   if ((isinstance(num, int) and num % 2 == 0) or 
+                       (isinstance(num, float) and num.is_integer() and int(num) % 2 == 0)) and 
                    i % 3 != 2)
     
     return even_sum
