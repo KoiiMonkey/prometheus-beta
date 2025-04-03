@@ -26,8 +26,8 @@ def test_process_array_all_even_numbers():
 def test_process_array_with_floats():
     """Test with floating point numbers"""
     input_array = [1.5, 2.0, 3.0, 4.5, 5.0, 6.0]
-    # Expected: 2.0, 4.5 
-    assert process_array(input_array) == 6.5
+    # Expected: 2.0 (because 4.5 is not an integer even number)
+    assert process_array(input_array) == 2.0
 
 def test_process_array_invalid_input_type():
     """Test that TypeError is raised for non-list input"""
