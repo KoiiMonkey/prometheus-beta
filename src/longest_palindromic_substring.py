@@ -31,7 +31,7 @@ def longest_palindromic_substring(s: str) -> str:
     
     def expand_around_center(left: int, right: int) -> int:
         """Helper function to expand around a center and find palindrome length."""
-        while left >= 0 and right < len(s) and s[left] == s[right]:
+        while left >= 0 and right < len(s) and s[left].lower() == s[right].lower():
             left -= 1
             right += 1
         return right - left - 1
