@@ -25,18 +25,11 @@ def sum_subarrays(arr, k):
     # Track total sum of valid subarrays
     total_sum = 0
     
-    # Generate all possible subarrays
-    for start in range(len(arr)):
-        current_sum = 0
-        for end in range(start, len(arr)):
-            # Add current element to sum
-            current_sum += arr[end]
-            
-            # Check if current subarray length is <= k
-            if end - start + 1 <= k:
-                total_sum += current_sum
-            else:
-                # Stop if subarray exceeds k
-                break
+    # Generate subarrays
+    n = len(arr)
+    for length in range(1, min(k, n) + 1):
+        for start in range(n - length + 1):
+            # Sum of this specific subarray
+            total_sum += sum(arr[start:start+length])
     
     return total_sum
